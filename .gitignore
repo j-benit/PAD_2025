@@ -1,0 +1,17 @@
+/venv
+venv
+
+dist
+build
+
+.vscode
+/.vscode
+clase 1.pptx
+github projects.pptx
+edu_pad.egg-info/PKG-INFO
+src/edu_pad/__pycache__/database.cpython-312.pyc
+src/edu_pad/__pycache__/dataweb.cpython-312.pyc
+edu_pad.egg-info/PKG-INFO
+dist/edu_pad-0.0.1-py3.12.egg
+edu_pad.egg-info/PKG-INFO
+edu_pad.egg-info/PKG-INFO

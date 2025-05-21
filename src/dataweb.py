@@ -2,7 +2,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-class DataWebML:
+class DataWeb:
     def __init__(self):
         self.url = "https://listado.mercadolibre.com.co/laptop#D[A:laptop]"
 

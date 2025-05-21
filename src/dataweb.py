@@ -49,5 +49,10 @@ class DataWeb:
 
     def convertir_numericos(self, df):
         df = df.copy()
-        df["precio"] = pd.to_numeric(df["precio"].str.replace(".", ""), errors="coerce")
+        if "precio" in df.columns:
+            # Asegurarse de que 'precio' sea string antes de reemplazar
+            df["precio"] = df["precio"].astype(str).str.replace(".", "", regex=False)
+            df["precio"] = pd.to_numeric(df["precio"], errors="coerce")
+        else:
+            print("⚠️ La columna 'precio' no existe en el DataFrame. Columnas disponibles:", df.columns)
         return df

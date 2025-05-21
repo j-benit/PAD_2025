@@ -1,40 +1,30 @@
+# database.py
 import pandas as pd
 import sqlite3
 import os
 
-# 1 sobre escribir , 2 actualizar 3 insertar al final
-
 class DataBase:
     def __init__(self):
+        # Asegúrate de que la ruta exista
+        os.makedirs("src/PAD_2025/src/static/db", exist_ok=True)
         self.rutadb = "src/PAD_2025/src/static/db/laptops.sqlite"
 
-    
-
-
-    def guardar_df(self,df=pd.DataFrame()):
-        df = df.copy()
+    def guardar_df(self, df=pd.DataFrame()):
         try:
             conn = sqlite3.connect(self.rutadb)
-            df["fecha_create"]= "2025-05-21"
-            df["fecha_update"] = "2025-05-21"
-            df.to_sql("laptops_analisis",conn,if_exists='replace',index=False)
-            print("*******************************************************************")
-            print("Datos guardados")
-            print("*******************************************************************")
-            print("Se guardo el df en base de datos cantidad de registros {str(df.shape)}")
-        except Exception as errores:
-            print("Error al guardar el df en base de datos {}".format(df.shape))
+            df["fecha_create"] = pd.Timestamp.now()
+            df["fecha_update"] = pd.Timestamp.now()
+            df.to_sql("laptops_analisis", conn, if_exists='replace', index=False)
+            print("✅ Datos guardados en base de datos.")
+        except Exception as e:
+            print(f"❌ Error al guardar en la base de datos: {e}")
 
-    def obtener_datos(self,nombre_tabla="laptops_analisis"):
+    def obtener_datos(self, nombre_tabla="laptops_analisis"):
         try:
             conn = sqlite3.connect(self.rutadb)
-            consulta = "select * from {}".format(nombre_tabla)
-            df = pd.read_sql_query(consulta,conn)
-            print("*******************************************************************")
-            print("Se obtuvieron los datos de la base datos")
-            print("*******************************************************************")
-            print("Dase de datos cantidad de registros {}".format(df.shape))
+            df = pd.read_sql_query(f"SELECT * FROM {nombre_tabla}", conn)
+            print(f"✅ Registros recuperados: {df.shape[0]}")
             return df
-        except Exception as errores:
-            return df
-            print("Error al obtener los datos de la tabla {str(nombre_tabla)} en base de datos {str(errores)}")
+        except Exception as e:
+            print(f"❌ Error al leer la base de datos: {e}")
+            return pd.DataFrame()

@@ -6,16 +6,17 @@ import os
 
 class DataBase:
     def __init__(self):
-        self.rutadb = "src/edu_pad/static/db/dolar_analisis.db"
+        self.rutadb = "src/PAD_2025/src/static/csv"
+    
 
 
     def guardar_df(self,df=pd.DataFrame()):
         df = df.copy()
         try:
             conn = sqlite3.connect(self.rutadb)
-            df["fecha_create"]= "2025-05-5"
-            df["fecha_update"] = "2025-05-5"
-            df.to_sql("dolar_analisis",conn,if_exists='replace',index=False)
+            df["fecha_create"]= "2025-05-21"
+            df["fecha_update"] = "2025-05-21"
+            df.to_sql("laptops_analisis",conn,if_exists='replace',index=False)
             print("*******************************************************************")
             print("Datos guardados")
             print("*******************************************************************")
@@ -23,7 +24,7 @@ class DataBase:
         except Exception as errores:
             print("Error al guardar el df en base de datos {}".format(df.shape))
 
-    def obtener_datos(self,nombre_tabla="dolar_analisis"):
+    def obtener_datos(self,nombre_tabla="laptops_analisis"):
         try:
             conn = sqlite3.connect(self.rutadb)
             consulta = "select * from {}".format(nombre_tabla)

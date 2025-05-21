@@ -10,6 +10,5 @@ def main():
     df.to_csv("src/static/csv/data_extractor.csv", index=False)
 
 
-
 if __name__ == "__main__":
     main()

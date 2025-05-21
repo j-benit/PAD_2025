@@ -6,7 +6,8 @@ import os
 
 class DataBase:
     def __init__(self):
-        self.rutadb = "src/PAD_2025/src/static/csv"
+        self.rutadb = "src/PAD_2025/src/static/db/laptops.sqlite"
+
     
 
 

@@ -6,18 +6,23 @@ from webdriver_manager.chrome import ChromeDriverManager
 import time
 
 def extraer_laptops():
+    # Configurar opciones de Chrome para el modo headless
     chrome_options = Options()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
 
+    # Inicializar el driver de Chrome
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
 
+    # URL de búsqueda de laptops
     url = "https://listado.mercadolibre.com.co/laptop#D[A:laptop]"
     driver.get(url)
-    time.sleep(5)
+    time.sleep(5)  # Esperar a que la página cargue
 
+    # Extraer los productos
     productos = driver.find_elements(By.CLASS_NAME, "ui-search-result__wrapper")
+
     print(f"Productos encontrados: {len(productos)}")
 
     for producto in productos:

@@ -38,6 +38,17 @@ class DataWeb:
         driver.quit()
         df = pd.DataFrame(datos)
         return df
+    
+    def convertir_numericos(self,df=pd.DataFrame()):
+        df= df.copy()
+        if len(df)>0:
+            #for col in (df.columns):
+            for col in ('abrir',	'max',	'min',	'cerrar',	'cierre_ajustado',	'volumen'):
+                df[col] = (df[col]
+                           .str.replace(r"\.","",regex=True)
+                           .str.replace(",",'.'))
+
+        return df
 
 # Ejemplo de uso:
 # dw = DataWebML()

@@ -1,69 +1,37 @@
-# dataweb.py
 import pandas as pd
-import time
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
+import requests
+from bs4 import BeautifulSoup
 
-
-class DataWeb:
+class DataWebML:
     def __init__(self):
         self.url = "https://listado.mercadolibre.com.co/laptop#D[A:laptop]"
 
     def obtener_datos(self):
-        chrome_options = Options()
-        chrome_options.add_argument("--headless")
-        chrome_options.add_argument("--no-sandbox")
-        chrome_options.add_argument("--disable-dev-shm-usage")
-
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
-        driver.get(self.url)
-
         try:
-            # Espera explícita
-            WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "ui-search-result__wrapper"))
-            )
+            headers = {
+                "User-Agent": "Mozilla/5.0"
+            }
+            respuesta = requests.get(self.url, headers=headers)
+            if respuesta.status_code != 200:
+                print("Error al acceder a la página")
+                return pd.DataFrame()
 
-            productos = driver.find_elements(By.CLASS_NAME, "ui-search-result__wrapper")
-            print(f" Productos encontrados: {len(productos)}")
+            soup = BeautifulSoup(respuesta.text, 'html.parser')
 
-            datos = []
-            for producto in productos:
-                try:
-                    titulo = producto.find_element(By.TAG_NAME, "h2").text
-                    precio = producto.find_element(By.CSS_SELECTOR, ".andes-money-amount__fraction").text
-                    datos.append({
-                        "titulo": titulo,
-                        "precio": precio
-                    })
-                except Exception as e:
-                    print(" Error al extraer producto:", e)
-                    continue
+            titulos = soup.select(".ui-search-item__title")
+            precios = soup.select(".andes-money-amount__fraction")
 
-            df = pd.DataFrame(datos)
-            df = self.convertir_numericos(df)
+            productos = []
+            for titulo, precio in zip(titulos, precios):
+                productos.append({
+                    "titulo": titulo.get_text(strip=True),
+                    "precio": precio.get_text(strip=True)
+                })
 
-            print(" Datos obtenidos y convertidos:")
+            df = pd.DataFrame(productos)
+            print("Datos extraídos:")
             print(df.head())
             return df
 
-        except Exception as err:
-            print(" Error general en la extracción:", err)
-            return pd.DataFrame()
-        finally:
-            driver.quit()
-
-    def convertir_numericos(self, df=pd.DataFrame()):
-        df = df.copy()
-        if "precio" in df.columns:
-            df["precio"] = (df["precio"]
-                            .astype(str)
-                            .str.replace(".", "", regex=False)
-                            .str.replace(",", "", regex=False))
-            df["precio"] = pd.to_numeric(df["precio"], errors="coerce")
-        return df
+        except Exception as e:
+            print

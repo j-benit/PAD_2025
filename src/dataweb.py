@@ -19,8 +19,8 @@ class DataWeb:
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=opciones)
         driver.get(self.url)
         time.sleep(5)  # Espera para que cargue el JS
-
-        productos = driver.find_elements(By.CLASS_NAME, "ui-search-result__wrapper")
+        
+        productos = driver.find_elements(By.CLASS_NAME, "h2.ui-search-result__wrapper")
 
         datos = []
         for producto in productos:

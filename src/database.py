@@ -17,13 +17,13 @@ class DataBase:
             df.to_sql("laptops_analisis", conn, if_exists='replace', index=False)
             print("✅ Datos guardados en base de datos.")
         except Exception as e:
-            print(f"❌ Error al guardar en la base de datos: {e}")
+            print(f"Error al guardar en la base de datos: {e}")
 
     def obtener_datos(self, nombre_tabla="laptops_analisis"):
         try:
             conn = sqlite3.connect(self.rutadb)
             df = pd.read_sql_query(f"SELECT * FROM {nombre_tabla}", conn)
-            print(f"✅ Registros recuperados: {df.shape[0]}")
+            print(f" Registros recuperados: {df.shape[0]}")
             return df
         except Exception as e:
             print(f"❌ Error al leer la base de datos: {e}")

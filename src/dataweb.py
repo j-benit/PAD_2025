@@ -30,7 +30,7 @@ class DataWeb:
             )
 
             productos = driver.find_elements(By.CLASS_NAME, "ui-search-result__wrapper")
-            print(f"📦 Productos encontrados: {len(productos)}")
+            print(f" Productos encontrados: {len(productos)}")
 
             datos = []
             for producto in productos:
@@ -42,18 +42,18 @@ class DataWeb:
                         "precio": precio
                     })
                 except Exception as e:
-                    print("⚠️ Error al extraer producto:", e)
+                    print(" Error al extraer producto:", e)
                     continue
 
             df = pd.DataFrame(datos)
             df = self.convertir_numericos(df)
 
-            print("✅ Datos obtenidos y convertidos:")
+            print(" Datos obtenidos y convertidos:")
             print(df.head())
             return df
 
         except Exception as err:
-            print("❌ Error general en la extracción:", err)
+            print(" Error general en la extracción:", err)
             return pd.DataFrame()
         finally:
             driver.quit()

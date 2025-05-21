@@ -25,7 +25,7 @@ jobs:
           pip install -e . # Cambia esto si usas otra forma de declarar dependencias
 
       - name: Paso 4 - Ejecutar Main
-        run: python src/edu_pad/main.py
+        run: python src/main.py
 
       - name: Paso 5 - Guardar el commit con el último cambio desde pipeline
         uses: stefanzweifel/git-auto-commit-action@v5

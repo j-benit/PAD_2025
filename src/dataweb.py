@@ -24,7 +24,7 @@ def extraer_laptops():
     datos = []
     for producto in productos:
         try:
-            titulo = producto.find_element(By.CSS_SELECTOR, "h2").text
+            titulo = producto.find_element(By.CSS_SELECTOR, ".ui-search-item__title").text
             precio = producto.find_element(By.CSS_SELECTOR, ".andes-money-amount__fraction").text
             datos.append({
                 "titulo": titulo,

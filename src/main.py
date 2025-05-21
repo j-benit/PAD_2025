@@ -8,7 +8,7 @@ def main():
     df = dataweb.obtener_datos()
 
     if df.empty:
-        print("⚠️ No se extrajeron datos.")
+        print(" No se extrajeron datos.")
         return
 
     df.to_csv("src/static/csv/data_extractor.csv", index=False)
@@ -18,7 +18,7 @@ def main():
 
     df_db = database.obtener_datos()
     df_db.to_csv("src/static/csv/data_db.csv", index=False)
-    print("✅ Proceso completado correctamente.")
+    print(" Proceso completado correctamente.")
 
 if __name__ == "__main__":
     main()
